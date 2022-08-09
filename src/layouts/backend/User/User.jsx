@@ -19,6 +19,16 @@ import {
   TablePagination,
 } from '@mui/material';
 // components
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import Box from '@mui/material/Box';
+import DialogTitle from '@mui/material/DialogTitle';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 import Page from '../../../components/Page';
 import Label from '../../../components/Label';
 import Scrollbar from '../../../components/Scrollbar';
@@ -84,6 +94,100 @@ export default function User() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const [open, setOpen] = useState(false);
+
+  const [role, setRole] = useState('');
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleChange = (event) => {
+    setRole(event.target.value);
+  };
+
+  const CustomModal = () => {
+    return (
+      <div>
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>Subscribe</DialogTitle>
+          <DialogContent>
+            <Box
+              component="form"
+              sx={{
+                '& .MuiTextField-root': { m: 1, width: '50ch' },
+              }}
+              noValidate
+              autoComplete="off"
+            >
+              <div>
+                <TextField required id="outlined-required" label="UserName" />
+              </div>
+            </Box>
+            <Box
+              component="form"
+              sx={{
+                '& .MuiTextField-root': { m: 1, width: '50ch' },
+              }}
+              noValidate
+              autoComplete="off"
+            >
+              <div>
+                <TextField required id="outlined-required" label="Password" />
+              </div>
+            </Box>
+            <Box
+              component="form"
+              sx={{
+                '& .MuiTextField-root': { m: 1, width: '50ch' },
+              }}
+              noValidate
+              autoComplete="off"
+            >
+              <div>
+                <TextField required id="outlined-required" label="Email" />
+              </div>
+            </Box>
+            <Box
+              component="form"
+              sx={{
+                '& .MuiTextField-root': { m: 1, width: '50ch' },
+              }}
+              noValidate
+              autoComplete="off"
+            >
+              <div>
+                <TextField required id="outlined-required" label="Password" />
+              </div>
+            </Box>
+            <FormControl sx={{ m: 1, minWidth: 100 }}>
+              <InputLabel id="demo-simple-select-autowidth-label">Role</InputLabel>
+              <Select
+                labelId="demo-simple-select-autowidth-label"
+                id="demo-simple-select-autowidth"
+                value={role}
+                onChange={handleChange}
+                autoWidth
+                label="Role"
+              >
+                <MenuItem value={1}>Admin</MenuItem>
+                <MenuItem value={2}>Editor</MenuItem>
+              </Select>
+            </FormControl>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Cancel</Button>
+            <Button onClick={handleClose}>Register</Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+    );
+  };
+
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -133,6 +237,10 @@ export default function User() {
 
   const isUserNotFound = filteredUsers.length === 0;
 
+  const handleClickTest = (name) => {
+    console.log(name);
+  }
+
   return (
     <Page title="User">
       <Container>
@@ -140,7 +248,13 @@ export default function User() {
           <Typography variant="h4" gutterBottom>
             User
           </Typography>
-          <Button variant="contained" component={RouterLink} to="#" startIcon={<Iconify icon="eva:plus-fill" />}>
+          <Button
+            variant="contained"
+            component={RouterLink}
+            to="#"
+            onClick={handleClickOpen}
+            startIcon={<Iconify icon="eva:plus-fill" />}
+          >
             New User
           </Button>
         </Stack>
@@ -195,7 +309,7 @@ export default function User() {
                         </TableCell>
 
                         <TableCell align="right">
-                          <UserMoreMenu />
+                          <UserMoreMenu handleClick={() =>handleClickTest(name)}  />
                         </TableCell>
                       </TableRow>
                     );
@@ -231,7 +345,7 @@ export default function User() {
           />
         </Card>
       </Container>
+      <CustomModal />
     </Page>
   );
 }
-
